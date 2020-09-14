@@ -5,8 +5,9 @@ import styles from './Task.module.scss';
 export interface TaskData {
   title: string;
   done: boolean;
-  // createdAt saved as a timestamp
+  // createdAt and doneAt saved as a timestamp
   createdAt: number;
+  doneAt: number | null;
 }
 
 export interface TaskRecord extends TaskData {
@@ -18,7 +19,7 @@ export interface TaskProps extends TaskRecord {
 }
 
 export default function Task(props: TaskProps) {
-  const { id, title, done, createdAt, onUpdatedTask } = props;
+  const { id, title, done, createdAt, doneAt, onUpdatedTask } = props;
 
   const [editingTask, setEditingTask] = useState(false);
 
@@ -36,7 +37,8 @@ export default function Task(props: TaskProps) {
 
   const handleToggleTask = async (e: ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
-    await updateTask({ done: checked, title, createdAt });
+    const doneDate = checked ? Date.now() : null;
+    await updateTask({ done: checked, title, createdAt, doneAt: doneDate });
 
     if (!errorUpdatingTask) {
       onUpdatedTask();
@@ -48,7 +50,7 @@ export default function Task(props: TaskProps) {
     // should show a validation message
     if (!newTitle) return;
 
-    await updateTask({ done, title: newTitle, createdAt });
+    await updateTask({ done, title: newTitle, createdAt, doneAt });
     if (!errorUpdatingTask) {
       await onUpdatedTask();
       setEditingTask(false);
