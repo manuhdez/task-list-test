@@ -2,14 +2,14 @@ import React from 'react';
 import Task, { TaskRecord } from './Task/Task';
 import styles from './TasksList.module.scss';
 
-interface Props {
+export interface TasksListProps {
   tasks: TaskRecord[];
   fetchTasks: () => Promise<void>;
   isLoading: boolean;
   hasError: boolean;
 }
 
-export default function TasksList(props: Props) {
+export default function TasksList(props: TasksListProps) {
   const sortByCreationDate = (a: TaskRecord, b: TaskRecord) => {
     if (a.createdAt > b.createdAt) return -1;
     if (a.createdAt < b.createdAt) return 1;
