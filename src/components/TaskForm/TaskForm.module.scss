@@ -1,0 +1,58 @@
+$btn-bg: rgb(208, 209, 209);
+
+.task_form {
+  width: 100%;
+  padding: calc(0.6rem + 0.5rem);
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 480px) {
+    padding: calc(2rem + 0.5rem);
+    padding-bottom: 0;
+  }
+
+  label {
+    margin-bottom: 0.5rem;
+  }
+
+  .form_input {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+
+    input {
+      flex: 1;
+      margin-right: 1rem;
+      padding: 0.25rem;
+    }
+
+    button {
+      padding: 0.5rem 1.5rem;
+      border: 0px;
+      cursor: pointer;
+      font-weight: 500;
+      border-radius: 3px;
+      background: $btn-bg;
+
+      &:hover {
+        background: darken($btn-bg, 5);
+      }
+    }
+
+    @media (min-width: 697px) {
+      width: calc(50% - (0.5rem));
+    }
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+
+      input,
+      button {
+        flex: 1;
+        margin: 0.25rem 0;
+      }
+    }
+  }
+}
