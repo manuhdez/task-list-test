@@ -1,0 +1,25 @@
+.lists_container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 2rem;
+
+  @media (max-width: 697px) {
+    flex-direction: column;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.6rem;
+  }
+
+  h3 {
+    margin-bottom: 0.5rem;
+  }
+
+  ul {
+    flex: 1;
+    max-width: 600px;
+    margin: 0.5rem;
+  }
+}
