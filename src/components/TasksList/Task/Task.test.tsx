@@ -36,7 +36,7 @@ describe('Task', () => {
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 
-  test('User can edit a task', () => {
+  test('User can edit an incomplete task', () => {
     render(<Task {...mockProps} />);
 
     const editButton = screen.getByTitle('Edit');
@@ -52,6 +52,18 @@ describe('Task', () => {
     expect(global.fetch).toHaveBeenCalledTimes(0);
 
     fireEvent.click(saveButton);
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  test('User can remove a done task', () => {
+    mockProps.done = true;
+    render(<Task {...mockProps} />);
+
+    const removeButton = screen.getByTitle('Remove task');
+    expect(removeButton).toBeInTheDocument();
+    expect(global.fetch).toHaveBeenCalledTimes(0);
+
+    fireEvent.click(removeButton);
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 });
