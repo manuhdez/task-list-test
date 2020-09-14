@@ -1,9 +1,10 @@
 import React from 'react';
+import TasksListContainer from 'containers/TasksListContainer';
 
 export default function App() {
   return (
     <main>
-      <h1>Hello world</h1>
+      <TasksListContainer />
     </main>
   );
 }
