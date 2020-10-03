@@ -1,10 +1,15 @@
 import React from 'react';
 import TasksListContainer from 'containers/TasksListContainer';
+import { QueryCache, ReactQueryCacheProvider } from 'react-query';
+
+const queryCache = new QueryCache()
 
 export default function App() {
   return (
     <main>
-      <TasksListContainer />
+      <ReactQueryCacheProvider queryCache={queryCache}>
+        <TasksListContainer />
+      </ReactQueryCacheProvider>
     </main>
   );
 }

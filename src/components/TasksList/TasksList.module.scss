@@ -1,7 +1,8 @@
 .lists_container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 2 60px 1fr;
+  
   width: 100%;
   padding: 2rem;
 
@@ -11,15 +12,5 @@
 
   @media (max-width: 480px) {
     padding: 0.6rem;
-  }
-
-  h3 {
-    margin-bottom: 0.5rem;
-  }
-
-  ul {
-    flex: 1;
-    max-width: 600px;
-    margin: 0.5rem;
   }
 }

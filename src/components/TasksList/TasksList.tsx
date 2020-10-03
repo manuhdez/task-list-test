@@ -1,5 +1,6 @@
 import React from 'react';
 import Task, { TaskRecord } from './Task/Task';
+import TaskList from './TaskList/TaskList';
 import styles from './TasksList.module.scss';
 
 export interface TasksListProps {
@@ -27,25 +28,21 @@ export default function TasksList(props: TasksListProps) {
   const incompletedTasks = props.tasks
     .filter((task) => !task.done)
     .sort(sortByCreationDate);
-
   const completedTasks = props.tasks
     .filter((task) => task.done)
     .sort(sortByDoneDate);
 
+  const renderTask = (task: TaskRecord) => (
+    <Task key={task.id} {...task} onUpdatedTask={props.fetchTasks} />
+  );
+
+  const incompleted = incompletedTasks && incompletedTasks.map(renderTask);
+  const completed = completedTasks && completedTasks.map(renderTask);
+
   return (
     <div className={styles.lists_container}>
-      <ul>
-        <h3>Incomplete tasks</h3>
-        {incompletedTasks.map((task) => (
-          <Task key={task.id} {...task} onUpdatedTask={props.fetchTasks} />
-        ))}
-      </ul>
-      <ul hidden={!completedTasks.length}>
-        <h3>Done tasks</h3>
-        {completedTasks.map((task) => (
-          <Task key={task.id} {...task} onUpdatedTask={props.fetchTasks} />
-        ))}
-      </ul>
+      <TaskList title="Incomplete tasks" tasks={incompleted || []} />
+      <TaskList title="Done tasks" tasks={completed || []} />
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { TaskData } from 'components/TasksList/Task/Task';
 import styles from './TaskForm.module.scss';
+import Label from './Label/Label';
+import TaskInput from './TaskInput/TaskInput';
 
 export interface TaskFormProps {
   onSave: (body?: TaskData) => Promise<void>;
@@ -40,18 +42,14 @@ export default function TaskForm(props: TaskFormProps) {
 
   return (
     <form onSubmit={handleFormSubmit} className={styles.task_form}>
-      <label htmlFor="new-task">
-        <h3>Add a new task</h3>
-      </label>
-      <div className={styles.form_input}>
-        <input
-          type="text"
-          id="new-task"
-          onChange={handleInputChange}
-          disabled={isLoading}
-        />
-        <button>Add</button>
-      </div>
+      <Label text="Add a new task" htmlFor="new-task" />
+      <TaskInput
+        task={task}
+        inputId="new-task"
+        handleInputChange={handleInputChange}
+        disabled={isLoading}
+        buttonText="Add"
+      />
     </form>
   );
 }

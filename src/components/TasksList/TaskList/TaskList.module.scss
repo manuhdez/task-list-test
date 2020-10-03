@@ -1,0 +1,11 @@
+.title {
+  margin-bottom: 0.5rem;
+  grid-row: 1;
+}
+
+.list {
+  grid-row: 2;
+  flex: 1;
+  max-width: 600px;
+  margin: 0.5rem;
+}

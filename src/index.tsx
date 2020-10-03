@@ -1,14 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import { ReactQueryDevtools } from "react-query-devtools";
 
-import App from 'views/App';
+import App from "views/App";
 
-import 'normalize.css';
-import './index.scss';
+import "normalize.css";
+import "./index.scss";
+
+const app = (
+  <>
+    <App />
+    <ReactQueryDevtools />
+  </>
+);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <React.StrictMode>{app}</React.StrictMode>,
+  document.getElementById("root")
 );
