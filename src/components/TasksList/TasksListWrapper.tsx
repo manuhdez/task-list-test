@@ -1,16 +1,12 @@
+import useGetTodos from 'hooks/useGetTodos';
 import React from 'react';
 import Task, { TaskRecord } from './Task/Task';
 import TaskList from './TaskList/TaskList';
 import styles from './TasksList.module.scss';
 
-export interface TasksListProps {
-  tasks: TaskRecord[];
-  fetchTasks: () => Promise<void>;
-  isLoading: boolean;
-  hasError: boolean;
-}
+export default function TasksListWrapper() {
+  const { isLoading, data: todos } = useGetTodos();
 
-export default function TasksList(props: TasksListProps) {
   const sortByCreationDate = (a: TaskRecord, b: TaskRecord) => {
     if (a.createdAt > b.createdAt) return -1;
     if (a.createdAt < b.createdAt) return 1;
@@ -25,19 +21,20 @@ export default function TasksList(props: TasksListProps) {
     return 0;
   };
 
-  const incompletedTasks = props.tasks
-    .filter((task) => !task.done)
+  const incompletedTasks = todos
+    ?.filter((task) => !task.done)
     .sort(sortByCreationDate);
-  const completedTasks = props.tasks
-    .filter((task) => task.done)
+
+  const completedTasks = todos
+    ?.filter((task) => task.done)
     .sort(sortByDoneDate);
 
-  const renderTask = (task: TaskRecord) => (
-    <Task key={task.id} {...task} onUpdatedTask={props.fetchTasks} />
-  );
+  const renderTask = (task: TaskRecord) => <Task key={task.id} {...task} />;
 
   const incompleted = incompletedTasks && incompletedTasks.map(renderTask);
   const completed = completedTasks && completedTasks.map(renderTask);
+
+  if (isLoading) return <p>Loading todos...</p>;
 
   return (
     <div className={styles.lists_container}>

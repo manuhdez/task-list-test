@@ -14,12 +14,10 @@ export interface TaskRecord extends TaskData {
   id: number;
 }
 
-export interface TaskProps extends TaskRecord {
-  onUpdatedTask: () => Promise<void>;
-}
+export interface TaskProps extends TaskRecord {}
 
 export default function Task(props: TaskProps) {
-  const { id, title, done, createdAt, doneAt, onUpdatedTask } = props;
+  const { id, title, done, createdAt, doneAt } = props;
 
   const [editingTask, setEditingTask] = useState(false);
 
@@ -41,7 +39,6 @@ export default function Task(props: TaskProps) {
     await updateTask({ done: checked, title, createdAt, doneAt: doneDate });
 
     if (!errorUpdatingTask) {
-      onUpdatedTask();
     }
   };
 
@@ -52,7 +49,6 @@ export default function Task(props: TaskProps) {
 
     await updateTask({ done, title: newTitle, createdAt, doneAt });
     if (!errorUpdatingTask) {
-      await onUpdatedTask();
       setEditingTask(false);
     }
   };
@@ -66,7 +62,6 @@ export default function Task(props: TaskProps) {
   const handleRemoveTask = async () => {
     await removeTask();
     if (!errorRemovingTask) {
-      onUpdatedTask();
     }
   };
 

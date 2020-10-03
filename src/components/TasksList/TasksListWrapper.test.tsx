@@ -1,26 +1,22 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
+import TasksListWrapper from './TasksListWrapper';
+
 import mockTasks from './__mocks__/tasks.json';
+import useGetTodos from 'hooks/useGetTodos';
 
-import TasksList, { TasksListProps } from './TasksList';
-import { TaskRecord } from './Task/Task';
+jest.mock('hooks/useGetTodos');
 
-describe('TasksList', () => {
-  const mockFetchTasks = jest.fn();
-
-  let props: TasksListProps;
+describe('TasksListWrapper', () => {
   beforeEach(() => {
-    props = {
-      tasks: mockTasks as TaskRecord[],
+    (useGetTodos as jest.Mock).mockImplementation(() => ({
       isLoading: false,
-      hasError: false,
-      fetchTasks: mockFetchTasks,
-    };
+      data: mockTasks,
+    }));
   });
-
   test('Displays two lists of tasks that can have two status: ​Incomplete​ and ​Done', () => {
-    render(<TasksList {...props} />);
+    render(<TasksListWrapper />);
 
     expect(screen.getByText('Incomplete tasks')).toBeInTheDocument();
     expect(screen.getAllByTitle('Edit')).toHaveLength(2);

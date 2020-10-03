@@ -2,13 +2,11 @@ import React, { useEffect } from 'react';
 import useFetch from 'hooks/useFetch';
 
 import TaskForm from 'components/TaskForm/TaskForm';
-import TasksList from 'components/TasksList/TasksList';
+import TasksList from 'components/TasksList/TasksListWrapper';
 import { TaskData, TaskRecord } from 'components/TasksList/Task/Task';
 
 export default function TasksListContainer() {
-  const [getAllTasks, tasks, loadingTasks, errorLoadingTasks] = useFetch<
-    TaskRecord[]
-  >({
+  const [getAllTasks, tasks, loadingTasks] = useFetch<TaskRecord[]>({
     url: '/tasks',
   });
 
@@ -35,12 +33,7 @@ export default function TasksListContainer() {
         isLoading={savingNewTask}
         hasError={errorSavingTask}
       />
-      <TasksList
-        tasks={tasks || []}
-        fetchTasks={getAllTasks}
-        isLoading={loadingTasks}
-        hasError={errorLoadingTasks}
-      />
+      <TasksList />
     </>
   );
 }
