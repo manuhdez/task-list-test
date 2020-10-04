@@ -2,6 +2,12 @@ import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import styles from './Task.module.scss';
 import { useEditTodo, useRemoveTodo } from 'hooks/useFetchTodos';
 import { TaskRecord } from 'types/todo';
+import {
+  CancelIconButton,
+  EditIconButton,
+  RemoveIconButton,
+  SaveIconButton,
+} from 'components/IconButton';
 
 export default function Task(props: TaskRecord) {
   const { id, title, done, createdAt, doneAt } = props;
@@ -13,6 +19,10 @@ export default function Task(props: TaskRecord) {
   const [updateTodo] = useEditTodo();
   const [removeTodo] = useRemoveTodo();
 
+  const toggleEditMode = () => {
+    setEditingTask(!editingTask);
+  };
+
   const handleToggleTask = async (e: ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
     const doneDate = checked ? Date.now() : null;
@@ -23,7 +33,12 @@ export default function Task(props: TaskRecord) {
     const newTitle = editInputRef.current?.value;
     if (!newTitle) return;
 
-    updateTodo({ id, done, title: newTitle, createdAt, doneAt });
+    updateTodo(
+      { id, done, title: newTitle, createdAt, doneAt },
+      {
+        onSuccess: toggleEditMode,
+      }
+    );
   };
 
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -46,40 +61,24 @@ export default function Task(props: TaskRecord) {
           onKeyUp={handleKeyUp}
         />
         <div className={styles.actions}>
-          <button onClick={() => setEditingTask(!editingTask)}>
-            <span role="img" aria-label="Cancel" title="Cancel">
-              ❌
-            </span>
-          </button>
-          <button onClick={handleSaveUpdatedTask}>
-            <span role="img" aria-label="Save" title="Save">
-              💾
-            </span>
-          </button>
+          <CancelIconButton onClick={toggleEditMode} />
+          <SaveIconButton onClick={handleSaveUpdatedTask} />
         </div>
       </div>
     );
   };
 
   const renderTaskContent = () => {
+    const currentIcon = done ? (
+      <RemoveIconButton onClick={handleRemoveTask} />
+    ) : (
+      <EditIconButton onClick={toggleEditMode} />
+    );
+
     return (
       <div className={`${styles.content} ${done && styles.done}`}>
         <p>{title}</p>
-        <div className={styles.actions}>
-          {done ? (
-            <button onClick={handleRemoveTask}>
-              <span role="img" aria-label="Remove" title="Remove task">
-                🗑
-              </span>
-            </button>
-          ) : (
-            <button onClick={() => setEditingTask(!editingTask)}>
-              <span role="img" aria-label="Edit" title="Edit">
-                ✏️
-              </span>
-            </button>
-          )}
-        </div>
+        <div className={styles.actions}>{currentIcon}</div>
       </div>
     );
   };

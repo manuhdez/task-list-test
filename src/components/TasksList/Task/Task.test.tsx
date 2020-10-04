@@ -67,7 +67,7 @@ describe('Task', () => {
     mockProps.done = true;
     render(<Task {...mockProps} />);
 
-    const removeButton = screen.getByTitle('Remove task');
+    const removeButton = screen.getByTitle('Remove');
     expect(removeButton).toBeInTheDocument();
     expect(removeMock).toHaveBeenCalledTimes(0);
 

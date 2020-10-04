@@ -26,6 +26,6 @@ describe('TasksListWrapper', () => {
     expect(screen.getAllByTitle('Edit')).toHaveLength(2);
 
     expect(screen.getByText('Done tasks')).toBeInTheDocument();
-    expect(screen.getAllByTitle('Remove task')).toHaveLength(2);
+    expect(screen.getAllByTitle('Remove')).toHaveLength(2);
   });
 });

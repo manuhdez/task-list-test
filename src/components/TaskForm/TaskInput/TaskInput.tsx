@@ -25,7 +25,7 @@ export default function TaskInput({
         onChange={handleInputChange}
         disabled={disabled}
       />
-      <button>{disabled ? 'Saving todo...' : buttonText}</button>
+      <button disabled={disabled}>{disabled ? 'Saving...' : buttonText}</button>
     </div>
   );
 }
