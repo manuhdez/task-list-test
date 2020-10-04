@@ -1,19 +1,14 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { TaskData } from 'components/TasksList/Task/Task';
 import styles from './TaskForm.module.scss';
 import Label from './Label/Label';
 import TaskInput from './TaskInput/TaskInput';
+import { useCreateTodo } from 'hooks/useFetchTodos';
 
-export interface TaskFormProps {
-  onSave: (body?: TaskData) => Promise<void>;
-  afterSave: () => Promise<void>;
-  isLoading: boolean;
-  hasError: boolean;
-}
-
-export default function TaskForm(props: TaskFormProps) {
-  const { isLoading, hasError, onSave, afterSave } = props;
+export default function TaskForm() {
   const [task, setTask] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+
+  const [addTodo] = useCreateTodo();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -23,8 +18,9 @@ export default function TaskForm(props: TaskFormProps) {
   const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Should show a validation message to the user
-    if (!task || isLoading) return;
+    if (!task) return;
+
+    setIsSaving(true);
 
     const newTask = {
       title: task,
@@ -33,11 +29,14 @@ export default function TaskForm(props: TaskFormProps) {
       doneAt: null,
     };
 
-    await onSave(newTask);
-    if (!hasError) {
-      setTask('');
-      afterSave();
-    }
+    addTodo(newTask, {
+      onSuccess: () => {
+        setTask('');
+      },
+      onSettled: () => {
+        setIsSaving(false);
+      },
+    });
   };
 
   return (
@@ -47,7 +46,7 @@ export default function TaskForm(props: TaskFormProps) {
         task={task}
         inputId="new-task"
         handleInputChange={handleInputChange}
-        disabled={isLoading}
+        disabled={isSaving}
         buttonText="Add"
       />
     </form>

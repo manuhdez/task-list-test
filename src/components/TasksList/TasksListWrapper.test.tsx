@@ -4,9 +4,13 @@ import { render, screen } from '@testing-library/react';
 import TasksListWrapper from './TasksListWrapper';
 
 import mockTasks from './__mocks__/tasks.json';
-import useGetTodos from 'hooks/useGetTodos';
+import { useGetTodos } from 'hooks/useFetchTodos';
 
-jest.mock('hooks/useGetTodos');
+jest.mock('hooks/useFetchTodos', () => ({
+  useGetTodos: jest.fn(() => []),
+  useEditTodo: jest.fn(() => [jest.fn()]),
+  useRemoveTodo: jest.fn(() => [jest.fn()]),
+}));
 
 describe('TasksListWrapper', () => {
   beforeEach(() => {

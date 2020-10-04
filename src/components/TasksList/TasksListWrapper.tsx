@@ -1,7 +1,8 @@
-import useGetTodos from 'hooks/useGetTodos';
+import { useGetTodos } from 'hooks/useFetchTodos';
 import React from 'react';
-import Task, { TaskRecord } from './Task/Task';
+import Task from './Task/Task';
 import TaskList from './TaskList/TaskList';
+import { TaskRecord } from 'types/todo';
 import styles from './TasksList.module.scss';
 
 export default function TasksListWrapper() {

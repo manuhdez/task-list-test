@@ -1,5 +1,5 @@
-import React, { ChangeEvent } from 'react'
-import styles from  '../TaskForm.module.scss'
+import React, { ChangeEvent } from 'react';
+import styles from '../TaskForm.module.scss';
 
 interface TaskInputProps {
   task: string;
@@ -9,17 +9,23 @@ interface TaskInputProps {
   disabled: boolean;
 }
 
-export default function TaskInput({ task, inputId, handleInputChange, buttonText, disabled }: TaskInputProps) {
+export default function TaskInput({
+  task,
+  inputId,
+  handleInputChange,
+  buttonText,
+  disabled,
+}: TaskInputProps) {
   return (
     <div className={styles.form_input}>
-        <input
-          type="text"
-          id={inputId}
-          value={task}
-          onChange={handleInputChange}
-          disabled={disabled}
-        />
-        <button>{buttonText}</button>
-      </div>
-  )
+      <input
+        type="text"
+        id={inputId}
+        value={task}
+        onChange={handleInputChange}
+        disabled={disabled}
+      />
+      <button>{disabled ? 'Saving todo...' : buttonText}</button>
+    </div>
+  );
 }

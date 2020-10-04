@@ -1,26 +1,20 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import TaskForm, { TaskFormProps } from './TaskForm';
+import TaskForm from './TaskForm';
+import { useCreateTodo } from 'hooks/useFetchTodos';
+
+const mockCreateTodo = jest.fn();
+
+jest.mock('hooks/useFetchTodos', () => ({
+  useCreateTodo: () => [mockCreateTodo],
+}));
 
 describe('TaskForm', () => {
-  const mockOnSave = jest.fn();
-  const mockAfterSave = jest.fn();
-
-  let props: TaskFormProps;
-  beforeEach(() => {
-    props = {
-      onSave: mockOnSave,
-      afterSave: mockAfterSave,
-      isLoading: false,
-      hasError: false,
-    };
-  });
-
   test('A task can be added from the form', () => {
-    render(<TaskForm {...props} />);
+    render(<TaskForm />);
 
-    expect(mockOnSave).toHaveBeenCalledTimes(0);
+    expect(mockCreateTodo).toHaveBeenCalledTimes(0);
 
     const input = screen.getByRole('textbox');
     userEvent.type(input, 'This is a new task');
@@ -30,6 +24,6 @@ describe('TaskForm', () => {
     const addButton = screen.getByRole('button', { name: 'Add' });
     userEvent.click(addButton);
 
-    expect(mockOnSave).toHaveBeenCalledTimes(1);
+    expect(mockCreateTodo).toHaveBeenCalledTimes(1);
   });
 });

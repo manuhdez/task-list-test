@@ -1,56 +1,29 @@
-import useFetch from 'hooks/useFetch';
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import styles from './Task.module.scss';
+import { useEditTodo, useRemoveTodo } from 'hooks/useFetchTodos';
+import { TaskRecord } from 'types/todo';
 
-export interface TaskData {
-  title: string;
-  done: boolean;
-  // createdAt and doneAt saved as a timestamp
-  createdAt: number;
-  doneAt: number | null;
-}
-
-export interface TaskRecord extends TaskData {
-  id: number;
-}
-
-export interface TaskProps extends TaskRecord {}
-
-export default function Task(props: TaskProps) {
+export default function Task(props: TaskRecord) {
   const { id, title, done, createdAt, doneAt } = props;
 
   const [editingTask, setEditingTask] = useState(false);
 
   const editInputRef = React.createRef<HTMLInputElement>();
 
-  const [updateTask, , isUpdatingTask, errorUpdatingTask] = useFetch<
-    TaskRecord,
-    TaskData
-  >({ url: `/tasks/${id}`, method: 'PUT' });
-
-  const [removeTask, , , errorRemovingTask] = useFetch<TaskRecord>({
-    url: `/tasks/${id}`,
-    method: 'DELETE',
-  });
+  const [updateTodo] = useEditTodo();
+  const [removeTodo] = useRemoveTodo();
 
   const handleToggleTask = async (e: ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
     const doneDate = checked ? Date.now() : null;
-    await updateTask({ done: checked, title, createdAt, doneAt: doneDate });
-
-    if (!errorUpdatingTask) {
-    }
+    updateTodo({ id, done: checked, title, createdAt, doneAt: doneDate });
   };
 
   const handleSaveUpdatedTask = async () => {
     const newTitle = editInputRef.current?.value;
-    // should show a validation message
     if (!newTitle) return;
 
-    await updateTask({ done, title: newTitle, createdAt, doneAt });
-    if (!errorUpdatingTask) {
-      setEditingTask(false);
-    }
+    updateTodo({ id, done, title: newTitle, createdAt, doneAt });
   };
 
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -60,9 +33,7 @@ export default function Task(props: TaskProps) {
   };
 
   const handleRemoveTask = async () => {
-    await removeTask();
-    if (!errorRemovingTask) {
-    }
+    removeTodo(id);
   };
 
   const renderEditingTask = () => {
@@ -115,12 +86,7 @@ export default function Task(props: TaskProps) {
 
   return (
     <li className={styles.task}>
-      <input
-        type="checkbox"
-        checked={done}
-        disabled={isUpdatingTask}
-        onChange={handleToggleTask}
-      />
+      <input type="checkbox" checked={done} onChange={handleToggleTask} />
       {editingTask ? renderEditingTask() : renderTaskContent()}
     </li>
   );

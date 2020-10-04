@@ -2,7 +2,7 @@ import React from 'react';
 import TasksListContainer from 'containers/TasksListContainer';
 import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 
-const queryCache = new QueryCache()
+export const queryCache = new QueryCache();
 
 export default function App() {
   return (
